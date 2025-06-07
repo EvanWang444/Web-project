@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>管理頁面</title>
+</head>
+<body>
+    <h1>管理頁面</h1>
+    
+    <h2>公告</h2>
+    <a href="{{ url_for('create') }}">新增公告</a>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>標題</th>
+            <th>時間</th>
+            <th>操作</th>
+        </tr>
+        {% for announcement in announcements %}
+        <tr>
+            <td>{{ announcement.id }}</td>
+            <td>{{ announcement.title }}</td>
+            <td>{{ announcement.timestamp }}</td>
+            <td>
+                <a href="{{ url_for('edit', announcement_id=announcement.id) }}">編輯</a>
+                <a href="{{ url_for('delete', announcement_id=announcement.id) }}" onclick="return confirm('確定要刪除此公告嗎？')">刪除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>自訂表單</h2>
+<a href="{{ url_for('create_form') }}">創建新表單</a>
+{% if forms %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>標題</th>
+        <th>描述</th>
+        <th>創建時間</th>
+        <th>操作</th>
+    </tr>
+    {% for form in forms %}
+    <tr>
+        <td>{{ form.id }}</td>
+        <td>{{ form.title }}</td>
+        <td>{{ form.description or '' }}</td>
+        <td>{{ form.created_at }}</td>
+        <td>
+            <a href="{{ url_for('dynamic_form', form_id=form.id) }}">表單連結</a>
+            <a href="{{ url_for('admin_form_submissions', form_id=form.id) }}">查看提交記錄</a>
+            <a href="{{ url_for('delete_form', form_id=form.id) }}" onclick="return confirm('確定要刪除此表單嗎？')">刪除</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>尚無自訂表單</p>
+{% endif %}
+
+    <a href="{{ url_for('admin_form_submissions') }}">查看所有表單提交記錄</a>

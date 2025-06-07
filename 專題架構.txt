@@ -1,0 +1,26 @@
+Web-project/
+│
+├── app.py                          # 主程式
+├── database.db                     # 資料庫
+├── static/
+│   └── uploads/                    # 圖片儲存
+│
+├── templates/
+│   ├── base.html
+│   ├── index.html                  # 首頁：廟宇介紹、資訊、最新公告
+│   ├── announcements.html          # 公告列表頁
+│   ├── announcement_detail.html    # 公告詳情頁
+│   ├── admin.html                  # 管理頁面：列表、修改、刪除按鈕
+│   ├── create.html                 # 新增公告頁面
+│   └── edit.html                   # 修改公告頁面
+│
+└── README.md
+
+
+
+----啟動----
+cd /d "D:\Web-project"
+venv\Scripts\activate
+
+(env) code .
+(env) flask run

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ form.title }}</title>
+</head>
+<body>
+    <h1>{{ form.title }}</h1>
+    {% if form.description %}
+        <p>{{ form.description }}</p>
+    {% endif %}
+    
+    <form method="post" action="{{ url_for('dynamic_form', form_id=form.id) }}">
+        <label for="name">姓名:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="email">電子郵件:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        
+        <label for="phone">手機號碼:</label><br>
+        <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" placeholder="請輸入10位數字"><br>
+        
+        {% for field in custom_fields %}
+            <label for="{{ field }}">{{ field }}:</label><br>
+            <textarea id="{{ field }}" name="{{ field }}"></textarea><br>
+        {% endfor %}
+        
+        <button type="submit">提交</button>
+    </form>
+    <a href="{{ url_for('index') }}">返回首頁</a>
+</body>
+</html>

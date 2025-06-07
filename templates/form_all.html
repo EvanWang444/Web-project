@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>表單提交記錄</title>
+</head>
+<body>
+    <h1>表單提交記錄</h1>
+    
+    <!-- 表單選擇 -->
+    <form method="get" action="{{ url_for('admin_form_submissions') }}">
+        <label for="form_id">選擇表單:</label>
+        <select id="form_id" name="form_id" onchange="this.form.submit()">
+            <option value="">所有表單</option>
+            {% for form in forms %}
+                <option value="{{ form.id }}" {% if selected_form_id == form.id %}selected{% endif %}>
+                    {{ form.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    
+    <!-- 提交記錄 -->
+    {% if submissions %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>表單標題</th>
+                    <th>姓名</th>
+                    <th>電子郵件</th>
+                    <th>手機號碼</th>
+                    <th>自訂欄位</th>
+                    <th>提交時間</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                    <tr>
+                        <td>{{ submission.id }}</td>
+                        <td>{{ submission.form_title }}</td>
+                        <td>{{ submission.name }}</td>
+                        <td>{{ submission.email }}</td>
+                        <td>{{ submission.phone }}</td>
+                        <td>
+                            {% if submission.custom_fields %}
+                                {% for key, value in submission.custom_fields.items() %}
+                                    <strong>{{ key }}:</strong> {{ value }}<br>
+                                {% endfor %}
+                            {% else %}
+                                無
+                            {% endif %}
+                        </td>
+                        <td>{{ submission.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>尚無提交記錄。</p>
+    {% endif %}
+    
+    <a href="{{ url_for('admin') }}">返回管理頁面</a>
+</body>
+</html>

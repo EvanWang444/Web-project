@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>創建新表單</title>
+</head>
+<body>
+    <h1>創建新表單</h1>
+    <form method="post" action="{{ url_for('create_form') }}">
+        <label for="title">表單標題:</label><br>
+        <input type="text" id="title" name="title" required><br>
+        <label for="description">表單描述:</label><br>
+        <textarea id="description" name="description"></textarea><br>
+        <label for="custom_fields">自訂欄位:</label><br>
+        <input type="text" id="custom_fields" name="custom_fields" placeholder="例如：意見,建議,備註"><br>
+        <button type="submit">創建表單</button>
+    </form>
+    <a href="{{ url_for('admin') }}">返回管理頁面</a>
+</body>
+</html>

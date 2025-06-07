@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>表單建構器</title>
+</head>
+<body>
+    <h1>管理表單欄位</h1>
+    <form method="POST" action="{{ url_for('form_builder') }}">
+        <label>欄位名稱（英文）:</label>
+        <input type="text" name="field_name" required><br>
+        <label>欄位標籤:</label>
+        <input type="text" name="field_label" required><br>
+        <label>欄位類型:</label>
+        <select name="field_type">
+            <option value="text">文字輸入</option>
+            <option value="email">電子郵件</option>
+            <option value="textarea">多行文字</option>
+            <option value="select">下拉選單</option>
+        </select><br>
+        <label>是否必填:</label>
+        <input type="checkbox" name="is_required"><br>
+        <label>顯示順序:</label>
+        <input type="number" name="display_order" required><br>
+        <button type="submit">新增欄位</button>
+    </form>
+
+    <h2>現有欄位</h2>
+    <table>
+        <tr>
+            <th>欄位名稱</th>
+            <th>標籤</th>
+            <th>類型</th>
+            <th>必填</th>
+            <th>順序</th>
+            <th>操作</th>
+        </tr>
+        {% for field in fields %}
+        <tr>
+            <td>{{ field.field_name }}</td>
+            <td>{{ field.field_label }}</td>
+            <td>{{ field.field_type }}</td>
+            <td>{{ '是' if field.is_required else '否' }}</td>
+            <td>{{ field.display_order }}</td>
+            <td><a href="{{ url_for('delete_field', field_id=field.id) }}">刪除</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('admin') }}">返回管理頁面</a>
+</body>
+</html>
