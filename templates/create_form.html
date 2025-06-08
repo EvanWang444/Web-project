@@ -59,8 +59,9 @@
             </div>
             <div class="mb-3">
                 <label for="custom_fields" class="form-label">自訂欄位:</label>
-                <input type="text" class="form-control" id="custom_fields" name="custom_fields" value="{{ custom_fields|default('') }}" placeholder="輸入欄位名稱，可用逗號（, 或 ，）或空格分隔，例如：意見 建議 備註">
+                <input type="text" class="form-control" id="custom_fields" name="custom_fields" value="{{ custom_fields|default('') }}" placeholder="輸入欄位名稱，可用逗號（, 或 ，）或空格分隔">
                 <div id="customFieldsError" class="error-message">自訂欄位數量不得超過10個，且單個欄位不得超過50個字符</div>
+                <div class="form-text">可輸入多個自訂欄位名稱</div>
             </div>
             <button type="submit" class="btn btn-primary">創建表單</button>
         </form>

@@ -392,13 +392,4 @@ def admin_form_submissions():
         selected_form_id=selected_form_id,
         headers=headers  # 將動態表頭傳遞給模板
     )
-# ====================================================================
-#  主程式執行入口
-# ====================================================================
-if __name__ == '__main__':
-    # 首次運行前檢查資料庫是否存在，若否，則初始化
-    if not os.path.exists('database.db'):
-        print("資料庫 'database.db' 不存在，正在進行初始化...")
-        init_db()
-        print("資料庫初始化完成。")
-    app.run(debug=True, port=5000)
+ 
