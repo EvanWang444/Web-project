@@ -16,6 +16,7 @@
         }
         .table th, .table td {
             vertical-align: middle;
+            white-space: nowrap; /* 避免長內容換行 */
         }
         .form-select {
             max-width: 300px;
@@ -26,11 +27,22 @@
     <div class="container">
         <h1 class="mb-4">表單提交記錄</h1>
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'danger' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <div class="mb-3">
             <form action="{{ url_for('admin_form_submissions') }}" method="get">
-                <label for="form_id" class="form-label">選擇表單:</label>
-                <select class="form-select" id="form_id" name="form_id" onchange="this.form.submit()">
-                    <option value="">所有表單</option>
+                <label for="form_id" class="form-label">選擇要查看的表單:</label>
+                <select class="form-select d-inline-block" id="form_id" name="form_id" onchange="this.form.submit()">
+                    <option value="">-- 請選擇一個表單 --</option>
                     {% for form in forms %}
                     <option value="{{ form.id }}" {% if selected_form_id == form.id %}selected{% endif %}>{{ form.title }}</option>
                     {% endfor %}
@@ -38,46 +50,30 @@
             </form>
         </div>
 
-        {% if submissions %}
+        {% if selected_form_id and submissions %}
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">表單標題</th>
-                        <th scope="col">姓名</th>
-                        <th scope="col">電子郵件</th>
-                        <th scope="col">手機號碼</th>
-                        <th scope="col">自訂欄位</th>
-                        <th scope="col">提交時間</th>
+                        {% for header in headers %}
+                            <th scope="col">{{ header }}</th>
+                        {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
-                    {% for submission in submissions %}
+                    {% for submission_row in submissions %}
                     <tr>
-                        <td>{{ submission.id }}</td>
-                        <td>{{ submission.form_title or '未知表單' }}</td>
-                        <td>{{ submission.name }}</td>
-                        <td>{{ submission.email }}</td>
-                        <td>{{ submission.phone }}</td>
-                        <td>
-                            {% if submission.custom_fields %}
-                                {% for key, value in submission.custom_fields.items() %}
-                                    <strong>{{ key }}:</strong> {{ value }}<br>
-                                {% endfor %}
-                            {% else %}
-                                無
-                            {% endif %}
-                        </td>
-                        <td>{{ submission.timestamp }}</td>
+                        {% for cell in submission_row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        {% else %}
+        {% elif selected_form_id %}
         <div class="alert alert-info" role="alert">
-            尚無表單提交記錄
+            此表單目前尚無任何提交記錄。
         </div>
         {% endif %}
 
